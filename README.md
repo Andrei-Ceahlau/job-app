@@ -1,154 +1,185 @@
-# test-app
-## *Prerequisites*
-* Make sure you have NodeJS globally installed, if not go to https://nodejs.org/en/download/ and download the latest version
-* Install WINDOWS REDIS
-  * Open this github link - https://github.com/zkteco-home/redis-windows/releases/tag/redis7.0.5
-  * Download and run redis-server.exe
-* Install PostgreSQL on local machine
-  * Go to https://www.postgresql.org/download/windows/
-  * Click on download the installer
-  * Follow the default installation steps
-  * Make sure to remember / note the master password
-  * Leave the default 5432 port
-* Install PGAdmin on local machine
-  * Go to https://www.pgadmin.org/download/pgadmin-4-windows/
-  * Download and install the lastest version of PGAdmin 4
-  * Make sure to remember / note the credentials asked for authentication
+# Aplicație de Gestionare Persoane și Mașini
 
-## * Server setup *
-* Setup .env file with following settings:
-  ```
-  PORT=8080
-  NODE_ENV=dev
-  DATABASE_URL=postgres://postgres:POSTGRES_PASSWORD@localhost:5432/persons
-  RUN_CRON=true
-  ```
-* In .env file make sure to replace POSTGRESQL_PASSWORD with the password you set up on PostgreSQL installation
-* Install globally nodemon
-  * npm install nodemon@2.0.7 -g
-* In the root folder
-  * Execute the command npm install (all server dependencies should install successfully)
-  * Execute the command nodemon
-  * If everything is ok, you should see in the console the following message:
-  ```javascript
-    λ nodemon
-    [nodemon] 2.0.7
-    [nodemon] to restart at any time, enter `rs`
-    [nodemon] watching path(s): *.*
-    [nodemon] watching extensions: js,mjs,json
-    [nodemon] starting `node ./server/app.js`
-    Database connection successfully.
-    Listening on port: 8080, env: dev
-  ```
+Această aplicație permite gestionarea persoanelor și a mașinilor asociate acestora, implementând funcționalități CRUD complete (Create, Read, Update, Delete) pentru ambele entități.
 
-## *Client setup *
-* Install angular cli globally
-  * npm install -g @angular/cli
-* Navigate to project/client
-  * Execute the command npm install (all client dependencies should install successfully)
-  * In the same client folder, execute the command npm start
-  * If everything is ok, you should see in the console the following message:
-  ```javascript
-    λ npm start
+## Cerințe de sistem
 
-    > test-app@0.0.0 start C:\Proiecte\test-app\client
-    > ng serve
+- Node.js (v18.12.0 recomandat)
+- npm (v8.19.2 recomandat)
+- PostgreSQL (v14 sau mai recent)
 
-    √ Browser application bundle generation complete.
+## Structură proiect
 
-    Initial Chunk Files   | Names         |      Size
-    vendor.js             | vendor        |   4.93 MB
-    styles.css, styles.js | styles        | 401.44 kB
-    polyfills.js          | polyfills     | 339.13 kB
-    main.js               | main          |  63.41 kB
-    runtime.js            | runtime       |   7.07 kB
+Proiectul este împărțit în două componente principale:
 
-                          | Initial Total |   5.72 MB
+- `server/` - Backend API dezvoltat cu Node.js, Express și Sequelize
+- `client/` - Frontend dezvoltat cu Angular
 
-    Build at: 2021-11-05T12:55:50.984Z - Hash: 5286c543f6d25b2c - Time: 5989ms
+## Pași de instalare și pornire
 
-    ** Angular Live Development Server is listening on localhost:3000, open your browser on http://localhost:3000/ **
+### 1. Clonarea repository-ului
 
+```bash
+git clone https://github.com/Andrei-Ceahlau/job-app.git
+cd job-app
+```
 
-    √ Compiled successfully.
-  ```
+### 2. Configurarea bazei de date PostgreSQL
 
-### Cerintele temei
-#### *FRONT END*
-1. Acceași funcționalitate ca în aplicația creată
-1. Se vor crea in header 2 taguri html - Persoane, Mașini
-1. Se vor crea 2 componente în folderul components Persoane, Mașini
-1. Fiecare link trebuie să folosească routerLink pentru a ajunge la componenta respectivă
-1. Fiecare componentă va conține următoarele
-  * Titlul componentei
-  * Tabelul cu informații
-  * Butonul de adaugă
-  * Modalul pentru adăugare / modificare
-### Componenta persoane
-1. Un tabel ce va conține următoarele coloane
-  * Număr curent
-  * Nume / prenume
-  * CNP
-  * Vârsta
-  * Lista mașinilor aflate în proprietate
-    * Denumire marcă / denumire model
-    * Anul fabricației
-    * Capacitatea cilindrică
-    * Taxa de impozit
-  * 2 iconițe pe tabel pentru modificare / ștergere
-  * Modificarea persoanei se va realiza pe același modal
-  * După ce persoana a fost ștearsă din baza de data, tabelul trebuie reîmprospătat
-2. La apăsarea butonului adaugă se va deschide modalul ce va conține următoarele
-  * Câmpuri
-    * Nume* - string, maxlength 255
-    * Prenume* - string, maxlength 255
-    * CNP* - string, maxlength 13
-    * Vârsta* - integer, maxlength 3
-    * Select multiplu (ng-select multiple) pentru mașini
-  * Funcționalitate
-    * Vârsta va fi calculată automat din CNP
-    * Câmpurile sunt obligatorii
-    * Validare și afișare mesaj cu denumirea câmpului ce nu a fost completat
-    * La apăsarea butonului adaugă, persoana va fi salvată în baza de date
-    * La apăsarea butonului renunță, modalul se va inchide fără a fi făcută salvarea
-    * După ce persoana a fost salvată, tabelul trebuie să conțină noua persoană
-    * Filtrare pe tabel (sa se pastreze datele liniilor filtrate)
+1. Instalați PostgreSQL dacă nu aveți deja:
 
-### Componenta mașini
-1. Un tabel ce va conține următoarele coloane
-  * Număr curent
-  * Denumire marcă
-  * Denumire model
-  * Anul fabricației
-  * Capacitatea cilindrică
-  * Taxa de impozit
-  * 2 iconițe pe tabel pentru modificare / ștergere
-  * Modificarea mașinii se va realiza pe același modal
-  * După ce mașina a fost ștearsă din baza de data, tabelul trebuie reîmprospătat
-2. La apăsarea butonului adaugă se va deschide modalul ce va conține următoarele
-  * Câmpuri
-    * Denumire marcă - string, maxlength 255
-    * Denumire model - string, maxlength 255
-    * Anul fabricației - integer, maxlength 4
-    * Capacitatea cilindrică - integer, maxlength 4
-    * Taxa de impozit - integer, maxlength 4
-  * Funcționalitate
-    * Taxa de impozit va fi calculată conform calcului
-      * capacitatea cilindrică < 1500 = 50 lei
-      * capacitatea cilindrică > 1500 < 2000 = 100 lei
-      * capacitatea cilindrică > 2000 = 200 lei
-    * Câmpurile sunt obligatorii
-    * Validare și afișare mesaj cu denumirea câmpului ce nu a fost completat
-    * La apăsarea butonului adaugă, mașina va fi salvată în baza de date
-    * La apăsarea butonului renunță, modalul se va inchide fără a fi făcută salvarea
-    * După ce mașina a fost salvată, tabelul trebuie să conțină noua mașină
-    * Filtrare pe tabel (sa se pastreze datele liniilor filtrate)
+   - Windows: Descărcați de la [postgresql.org](https://www.postgresql.org/download/windows/)
+   - macOS: `brew install postgresql`
+   - Linux: `sudo apt install postgresql postgresql-contrib`
 
-#### *BACK END*
-1. Create / update / find / findAll / destroy în tabelul Person
-1. Create / update / find / findAll / destroy în tabelul Car
-1. Creare tabel de joncțiune "Junction" cu următoarele coloane
-  * id_person, id_car
-4. La ștergerea unei persoane, se vor șterge toate liniile din tabelul de joncțiune aferente persoanei șterse
-5. La ștergerea unei mașini, se vor șterge toate liniile din tabelul de joncțiune aferente mașinii șterse
-6. La ștergerea unei mașini din modalul de persoană, se va șterge doar lini din joncțiune aferentă persoanei
+2. Creați o bază de date nouă:
+
+   ```sql
+   CREATE DATABASE todo_app;
+   ```
+
+3. Configurați credențialele în fișierul `.env` din rădăcina proiectului:
+   ```
+   DB_USER=postgres
+   DB_PASSWORD=parola_ta
+   DB_NAME=todo_app
+   DB_HOST=localhost
+   ```
+
+### 3. Instalarea dependențelor
+
+Instalați dependențele pentru server și client:
+
+```bash
+# Instalare dependențe server
+npm install
+
+# Instalare dependențe client
+cd client
+npm install
+cd ..
+```
+
+### 4. Pornirea aplicației
+
+Metoda 1: Pornirea separată a serverului și clientului
+
+```bash
+# Terminal 1 - Pornire server
+npm run dev
+# sau
+nodemon server/app.js
+
+# Terminal 2 - Pornire client
+cd client
+ng serve
+```
+
+Metoda 2: Pornire combinată (după build-ul clientului)
+
+```bash
+# Build client
+cd client
+ng build
+cd ..
+
+# Pornire server (va servi și fișierele client)
+npm start
+```
+
+### 5. Accesarea aplicației
+
+- Backend API: [http://localhost:8080](http://localhost:8080)
+- Frontend (când rulează separat): [http://localhost:3000](http://localhost:3000) (sau portul configurat)
+- Frontend (când rulează după build): [http://localhost:8080](http://localhost:8080)
+
+## Funcționalități implementate
+
+### Componenta Persoane
+
+- Vizualizarea listei de persoane cu detalii
+- Adăugarea unei persoane noi (nume, prenume, CNP, vârstă)
+- Editarea unei persoane existente
+- Ștergerea unei persoane (cu confirmare)
+- Filtrarea persoanelor după diverse criterii
+- Asocierea mai multor mașini unei persoane
+
+### Componenta Mașini
+
+- Vizualizarea listei de mașini cu detalii
+- Adăugarea unei mașini noi (marcă, model, an fabricație, capacitate cilindrică)
+- Editarea unei mașini existente
+- Ștergerea unei mașini (cu confirmare)
+- Filtrarea mașinilor după diverse criterii
+- Calculul automat al taxei de impozit în funcție de capacitatea cilindrică:
+  - < 1500 cm³: 50 lei
+  - 1500-2000 cm³: 100 lei
+  - > 2000 cm³: 200 lei
+
+### Componenta Informații
+
+- Vizualizarea informațiilor sistemului
+- Adăugare/Editare/Ștergere informații
+
+## Structura bazei de date
+
+Aplicația folosește următoarele tabele:
+
+- `Persons` - Stochează datele persoanelor
+- `Cars` - Stochează datele mașinilor
+- `Junctions` - Tabel de legătură pentru relația many-to-many între persoane și mașini
+- `Informations` - Stochează informații diverse despre sistem
+
+## Troubleshooting
+
+1. Dacă întâmpinați eroarea "EADDRINUSE" la pornirea serverului:
+
+   ```bash
+   # Opriți toate procesele care rulează pe portul 8080
+   pkill -f nodemon
+   # sau
+   kill $(lsof -t -i:8080)
+   ```
+
+2. Dacă apar erori legate de baza de date:
+
+   - Verificați dacă serviciul PostgreSQL rulează
+   - Verificați dacă credențialele din fișierul `.env` sunt corecte
+   - Verificați dacă baza de date `todo_app` există
+
+3. Dacă vedeți eroarea "nodemon update check failed":
+
+   ```bash
+   sudo chown -R $USER:$(id -gn $USER) ~/.config
+   ```
+
+4. Dacă clientul Angular nu pornește:
+   - Verificați versiunea Node.js (trebuie să fie compatibilă cu Angular)
+   - Verificați dacă toate dependențele sunt instalate corect: `cd client && npm install`
+
+## Tehnologii utilizate
+
+- **Backend**:
+  - Node.js și Express pentru API
+  - Sequelize ca ORM pentru baza de date
+  - PostgreSQL pentru persistența datelor
+- **Frontend**:
+  - Angular 14+
+  - Bootstrap pentru design responsive
+  - NgBootstrap pentru componente UI
+  - Axios pentru request-uri HTTP
+  - Font Awesome pentru iconițe
+
+## Dezvoltare ulterioară
+
+Pentru a extinde funcționalitățile aplicației, puteți:
+
+1. Adăuga autentificare și autorizare
+2. Implementa dashboard cu statistici
+3. Adăuga exporturi în diverse formate (PDF, Excel)
+4. Implementa funcții de căutare avansată
+5. Adăuga notificări și alerte
+
+## Contact
+
+Pentru întrebări sau probleme legate de această aplicație, vă rugăm să deschideți un issue pe GitHub sau să contactați direct dezvoltatorul.
