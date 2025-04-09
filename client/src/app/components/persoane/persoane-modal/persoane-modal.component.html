@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ person ? 'Modificare persoană' : 'Adăugare persoană' }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="personForm">
+    <div class="form-group">
+      <label for="nume">Nume*</label>
+      <input type="text" id="nume" class="form-control" formControlName="nume" maxlength="255">
+      <div *ngIf="f['nume'].errors && (f['nume'].dirty || f['nume'].touched)" class="text-danger">
+        <div *ngIf="f['nume'].errors['required']">Numele este obligatoriu.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="prenume">Prenume*</label>
+      <input type="text" id="prenume" class="form-control" formControlName="prenume" maxlength="255">
+      <div *ngIf="f['prenume'].errors && (f['prenume'].dirty || f['prenume'].touched)" class="text-danger">
+        <div *ngIf="f['prenume'].errors['required']">Prenumele este obligatoriu.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cnp">CNP*</label>
+      <input type="text" id="cnp" class="form-control" formControlName="cnp" maxlength="13" (input)="calculateAgeFromCNP()">
+      <div *ngIf="f['cnp'].errors && (f['cnp'].dirty || f['cnp'].touched)" class="text-danger">
+        <div *ngIf="f['cnp'].errors['required']">CNP-ul este obligatoriu.</div>
+        <div *ngIf="f['cnp'].errors['minlength'] || f['cnp'].errors['maxlength']">CNP-ul trebuie să aibă 13 caractere.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="varsta">Vârstă*</label>
+      <input type="number" id="varsta" class="form-control" formControlName="varsta" min="0" max="999" readonly>
+      <div *ngIf="f['varsta'].errors && (f['varsta'].dirty || f['varsta'].touched)" class="text-danger">
+        <div *ngIf="f['varsta'].errors['required']">Vârsta este obligatorie.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cars">Mașini</label>
+      <ng-select 
+        [items]="availableCars"
+        [multiple]="true"
+        bindLabel="fullName"
+        bindValue="id"
+        placeholder="Selectează mașinile"
+        formControlName="cars">
+      </ng-select>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="dismiss()">Renunță</button>
+  <button type="button" class="btn btn-primary" (click)="save()" [disabled]="personForm.invalid">
+    {{ person ? 'Modifică' : 'Adaugă' }}
+  </button>
+</div>

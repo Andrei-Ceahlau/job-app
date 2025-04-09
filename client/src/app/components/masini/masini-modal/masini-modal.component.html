@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ car ? 'Modificare mașină' : 'Adăugare mașină' }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="carForm">
+    <div class="form-group">
+      <label for="marca">Denumire marcă*</label>
+      <input type="text" id="marca" class="form-control" formControlName="marca" maxlength="255">
+      <div *ngIf="f['marca'].errors && (f['marca'].dirty || f['marca'].touched)" class="text-danger">
+        <div *ngIf="f['marca'].errors['required']">Denumirea mărcii este obligatorie.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="model">Denumire model*</label>
+      <input type="text" id="model" class="form-control" formControlName="model" maxlength="255">
+      <div *ngIf="f['model'].errors && (f['model'].dirty || f['model'].touched)" class="text-danger">
+        <div *ngIf="f['model'].errors['required']">Denumirea modelului este obligatorie.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="an_fabricatie">Anul fabricației*</label>
+      <input type="number" id="an_fabricatie" class="form-control" formControlName="an_fabricatie" min="1900" max="9999">
+      <div *ngIf="f['an_fabricatie'].errors && (f['an_fabricatie'].dirty || f['an_fabricatie'].touched)" class="text-danger">
+        <div *ngIf="f['an_fabricatie'].errors['required']">Anul fabricației este obligatoriu.</div>
+        <div *ngIf="f['an_fabricatie'].errors['min'] || f['an_fabricatie'].errors['max']">Anul fabricației trebuie să fie între 1900 și 9999.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="capacitate_cilindrica">Capacitatea cilindrică (cm³)*</label>
+      <input type="number" id="capacitate_cilindrica" class="form-control" formControlName="capacitate_cilindrica" min="0" max="9999" (input)="calculateTax()">
+      <div *ngIf="f['capacitate_cilindrica'].errors && (f['capacitate_cilindrica'].dirty || f['capacitate_cilindrica'].touched)" class="text-danger">
+        <div *ngIf="f['capacitate_cilindrica'].errors['required']">Capacitatea cilindrică este obligatorie.</div>
+        <div *ngIf="f['capacitate_cilindrica'].errors['min'] || f['capacitate_cilindrica'].errors['max']">Capacitatea cilindrică trebuie să fie între 0 și 9999.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="taxa_impozit">Taxa de impozit (lei)*</label>
+      <input type="number" id="taxa_impozit" class="form-control" formControlName="taxa_impozit" readonly>
+      <div *ngIf="f['taxa_impozit'].errors && (f['taxa_impozit'].dirty || f['taxa_impozit'].touched)" class="text-danger">
+        <div *ngIf="f['taxa_impozit'].errors['required']">Taxa de impozit este obligatorie.</div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="dismiss()">Renunță</button>
+  <button type="button" class="btn btn-primary" (click)="save()" [disabled]="carForm.invalid">
+    {{ car ? 'Modifică' : 'Adaugă' }}
+  </button>
+</div>

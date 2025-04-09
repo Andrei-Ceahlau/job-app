@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div class="row mt-3 mb-3">
+    <div class="col-8">
+      <h2>Mașini</h2>
+    </div>
+    <div class="col-4 text-right">
+      <button class="btn btn-primary" (click)="openModal()">Adaugă</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Caută..." [(ngModel)]="searchTerm" (input)="onSearch()">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Denumire marcă</th>
+            <th>Denumire model</th>
+            <th>Anul fabricației</th>
+            <th>Capacitatea cilindrică</th>
+            <th>Taxa de impozit</th>
+            <th>Acțiuni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let car of filteredCars; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ car.marca }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.an_fabricatie }}</td>
+            <td>{{ car.capacitate_cilindrica }} cm³</td>
+            <td>{{ car.taxa_impozit }} lei</td>
+            <td>
+              <button class="btn btn-sm btn-info mr-2" (click)="openModal(car)">
+                <i class="fa fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="confirmDelete(car)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="!filteredCars || filteredCars.length === 0">
+            <td colspan="7" class="text-center">Nu există mașini.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
